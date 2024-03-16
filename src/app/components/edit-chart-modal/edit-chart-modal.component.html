@@ -1,0 +1,30 @@
+<!-- edit-chart-modal.component.html-->
+
+
+
+<div class="modal-header">
+  <h4 class="modal-title">Edit Chart</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <label for="chartType">Type:</label>
+    <select id="chartType" class="form-control" [(ngModel)]="chartSettings.type">
+      <option *ngFor="let type of chartTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="chartTitle">Title:</label>
+    <input type="text" id="chartTitle" class="form-control" [(ngModel)]="chart.title">
+  </div>
+  <div class="form-group">
+    <label for="chartColor">Color:</label>
+    <input type="color" id="chartColor" class="form-control" [(ngModel)]="chartSettings.color">
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+</div>

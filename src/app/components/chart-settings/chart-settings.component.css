@@ -1,0 +1,18 @@
+/* .btn-container {
+    display: flex;
+    justify-content: space-between;
+  } */
+  
+  .btn-container button {
+    margin-right: 10px; /* Расстояние между кнопками */
+  }
+  
+
+  .justify-left {
+    text-align: left;
+  }
+  
+  .blue-background {
+    background-color: blue;
+  }
+  

@@ -1,0 +1,7 @@
+/* CSS стили для разделительной линии */
+.divider {
+    border-right: 1px solid #ccc;
+    margin: 0 10px;
+    height: 20px;
+  }
+  
