@@ -30,3 +30,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Links
 https://www.npmjs.com/package/highcharts
 https://api.highcharts.com/highcharts
+
+## Deploy to Github pages
+0. Check settings in the file angular.json -  "outputPath": "dist/chart-app" - it's Ok
+1. Command for build: ng build --output-path docs --base-href /chart-app/
+2. Copy all files from ./docs/browser to ./docs
+3. git push
+4. Deploy the project on github pages from /docs directory

@@ -1,7 +1,7 @@
 // edit-chart-modal.component.ts
 
 import { Component, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'; // Импортируем NgbActiveModal для работы с модальным окном
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'; 
 import { ChartData } from '../../chart-data.interface';
 import { ChartManagementService } from '../../chart-management.service';
 
@@ -11,13 +11,13 @@ import { ChartManagementService } from '../../chart-management.service';
   styleUrls: ['./edit-chart-modal.component.css']
 })
 export class EditChartModalComponent {
-  @Input() chart!: ChartData; // Добавляем восклицательный знак для указания на то, что это свойство будет инициализировано в родительском компоненте
+  @Input() chart!: ChartData; // восклицательный знак для указания на то, что это свойство будет инициализировано в родительском компоненте
   chartSettings: any = { type: '', color: '' }; // Создаем объект для хранения настроек графика
   chartTypes: string[] = ['line', 'bar', 'pie', 'area', 'spline', 'column']; // Пример типов графиков
 
 
   constructor(
-    public activeModal: NgbActiveModal,           // Внедряем NgbActiveModal для управления состоянием модального окна
+    public activeModal: NgbActiveModal, // NgbActiveModal для управления состоянием модального окна
     private chartService: ChartManagementService
 
   ) { }
@@ -40,30 +40,4 @@ export class EditChartModalComponent {
   closeModal(): void {
     this.activeModal.dismiss(); // Закрываем модальное окно без сохранения изменений
   }
-
-  // логика создания.удаления перемещена в chart-settings.component.ts
-  // deleteChart(): void {
-  //   if (this.chart && this.chart.id !== null) {
-  //     this.chartService.deleteChart(this.chart.id)
-  //       .subscribe(() => {
-  //         this.activeModal.close();
-  //       });
-  //   }
-  // }
-
-  // createChart(): void {
-  //   const newChart: ChartData = {
-  //     id: 0, // Предполагая, что id должен быть числом, не null
-  //     type: this.chart.type,
-  //     title: this.chart.title,
-  //     color: this.chart.color,
-  //     data: []
-  //   };
-
-  //   this.chartService.addChart(newChart)
-  //     .subscribe(createdChart => {
-  //       this.activeModal.close(createdChart);
-  //     });
-  // }
-
 }

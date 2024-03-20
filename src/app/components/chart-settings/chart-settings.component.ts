@@ -1,82 +1,60 @@
 // chart-settings.component.ts
-
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { ChartData } from '../../chart-data.interface';
-import { ChartManagementService } from '../../chart-management.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditChartModalComponent } from '../edit-chart-modal/edit-chart-modal.component';
+import { ChartState } from '../../chart.reducer';
+import { ChartManagementService } from '../../chart-management.service'; 
+import { editChart, deleteChart } from '../../chart.actions';
 
 @Component({
-    selector: 'app-chart-settings',
-    templateUrl: './chart-settings.component.html',
-    styleUrls: ['./chart-settings.component.css']
-  })
-  export class ChartSettingsComponent implements OnInit {
+  selector: 'app-chart-settings',
+  templateUrl: './chart-settings.component.html',
+  styleUrls: ['./chart-settings.component.css']
+})
+export class ChartSettingsComponent implements OnInit {
+  charts$: Observable<ChartData[]> | undefined;
+  private lastId: number = 100; // for mocking id increment without DB 
 
-    charts: ChartData[] = [];
-    private lastId: number = 100; // for mocking id increment without DB 
+  constructor(
+    private modalService: NgbModal,
+    private store: Store<ChartState>,
+    private chartService: ChartManagementService // Inject ChartManagementService
+  ) { }
 
-    constructor(
-      private modalService: NgbModal, 
-      private chartService: ChartManagementService
-    ) { }
-    
-    ngOnInit(): void {
-        this.getCharts();
-      }
-      
-      getCharts(): void {
-        this.chartService.getAllCharts()
-          .subscribe(charts => this.charts = charts);
-      }
-
-
-      openEditChartModal(chart: ChartData): void {
-        const modalRef = this.modalService.open(EditChartModalComponent);
-        modalRef.componentInstance.chart = chart;
-      }
-            
-      deleteChart(chartId: number): void {
-        this.chartService.deleteChart(chartId)
-        this.getCharts();
-      }
-
-
-      
-      createChart(): void {
-        const newChart: ChartData = {
-          id: ++this.lastId, 
-          title: 'New Chart',
-          options: {
-            chart: {
-              type: 'line'
-            },
-            title: {
-              text: 'New Chart'
-            },
-            xAxis: {
-              // Настройки для оси X
-            },
-            yAxis: {
-              // Настройки для оси Y
-            },
-            series: [{
-              name: 'Data',
-              type: 'line', // Добавляем тип серии данных
-              data: [[1999, 1], [2010, 2], [2020, 3]] // Пример данных для графика
-            }],
-            colors: [ '#000000' ]
-          }
-        };
-      
-        this.chartService.addChart(newChart);
-        this.getCharts(); // Обновляем список графиков после добавления нового
-        this.openEditChartModal(newChart)
-      }
-      
-      
-      
-      
-
+  ngOnInit(): void {
+    this.charts$ = this.chartService.getAllCharts(); // Use ChartManagementService to get charts
+    //this.charts$ = this.store.select(state => state.charts);
   }
-  
+
+  openEditChartModal(chart: ChartData): void {
+    const modalRef = this.modalService.open(EditChartModalComponent);
+    modalRef.componentInstance.chart = chart;
+  }
+
+  editChart(chartId: number, updatedChart: ChartData): void {
+    updatedChart.edited = true; // Set edited flag to true
+    this.chartService.updateChart(chartId, updatedChart); // Use ChartManagementService to update chart
+    this.store.dispatch(editChart({ id: chartId, chart: updatedChart }));
+  }
+
+  deleteChart(chartId: number): void {
+    this.chartService.deleteChart(chartId); // Use ChartManagementService to delete chart
+    this.store.dispatch(deleteChart({ id: chartId }));
+  }
+
+  createChart(): void {
+    const startYear = 2001; 
+    const endYear = 2020;   
+    const newChart: ChartData = {
+      id: ++this.lastId,
+      title: 'New Chart',
+      options: this.chartService.generateRandomChartOptions(startYear, endYear) // Use ChartManagementService to generate options
+    };
+
+    this.chartService.addChart(newChart); // Use ChartManagementService to add chart
+    this.openEditChartModal(newChart);
+  }
+}

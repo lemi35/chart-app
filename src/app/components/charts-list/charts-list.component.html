@@ -1,6 +1,5 @@
 <article>
   <div class="container-fluid">
-    <!-- <div class="row mb-4" *ngIf="charts.length > 0">   Date range filter should be hidden if we have no charts. Make after data fetching -->
     <div class="row mb-4">
       <div class="col-md-4">
         <label for="filterYear" class="font-weight-bold mt-2 mb-2">Filter by Year:</label>
@@ -11,7 +10,6 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <ng-container *ngIf="filteredCharts.length > 0; else noCharts">
         <div class="col-md-6" *ngFor="let chart of filteredCharts">

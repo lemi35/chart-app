@@ -11,15 +11,6 @@ import * as Highcharts from 'highcharts'; // Импорт Highcharts
   })
   export class ChartsListComponent implements OnInit {
 
-    // this's just for test
-    // chartOptions: Highcharts.Options = {
-    //   series: [{
-    //     data: [1, 2, 3],
-    //     type: 'line'
-    //   }]
-    // };
-
-
     charts: ChartData[] = [];
     filterYear: number | null = null; // Используем числовой тип для года
     filteredCharts: ChartData[] = [];
